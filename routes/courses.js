@@ -62,7 +62,7 @@ router.patch('/:id' , async (res,req)=>{
   try{
     const updatedCourse = await Course.findByIdAndUpdate(
        req.params.id  ,
-      { $set: {name: req.body.name }} ,{new: true}
+      { $set: {name: req.body.name }} 
       );
     res.json(updatedCourse)
   }catch (err){

@@ -14,7 +14,7 @@ mongoose.connection.once('open', () => {
 });
 
 
-
+//app.use() midle were to chech the user loging status
 
 app.use('/courses' , coursesRoute)
 app.use('/users' , userRoute)
