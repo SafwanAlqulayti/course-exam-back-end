@@ -34,6 +34,7 @@ app.use('/users' , userRoute)
 
 
 //port
-app.listen(3000, () => {
-    console.log('listening');
+const port = 7000
+app.listen(port, () => {
+    console.log('listening ' + port);
 });

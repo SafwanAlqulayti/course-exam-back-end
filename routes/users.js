@@ -21,6 +21,7 @@ const jwt = require('jsonwebtoken');
 
 //   })
 router.post('/',(req,res)=>{// sign up
+    console.log("post working")
     User.find({email: req.body.email} )
     .then(user=>{
         if(user.length  == 0){//true  , prevent email duplication
@@ -30,8 +31,10 @@ router.post('/',(req,res)=>{// sign up
                 User.create({username: req.body.username,
                 email: req.body.email,
                 password: hash
+                
         }).then((newuser)=> {
             res.json({msg:"User has created" ,newuser})
+            console.log("saved")
         })
     })
     }else{
@@ -44,7 +47,7 @@ router.post('/',(req,res)=>{// sign up
 
 // check log in
 router.post('/login',  async(req,res)=>{
-     
+     console.log("working")
     const user =  await User.findOne({username: req.body.username })
     if(user == null){
         res.status(400).send({msg: "The user cant be found"})
@@ -59,8 +62,9 @@ router.post('/login',  async(req,res)=>{
           console.log(userToken)
           let token = jwt.sign(userToken , "secret" ,{expiresIn: 1440})
           console.log(token)
-          res.send(token)
-      }else{
+          
+          res.status(200).send(token)
+       }else{
           res.send("not allowed")
       }
     }catch{
@@ -69,6 +73,16 @@ router.post('/login',  async(req,res)=>{
    
    
 })
+//delete user
+
+router.delete('/:id', async (req,res)=>{
+    try{
+    const removedUser = await User.findByIdAndRemove(req.params.id)
+     res.json(removedUser)
+    }catch (err){
+      res.json({msg:err})
+    }
+  })
 // get all user for testing only 
 // router.get('/',(req,res)=>{
 //    User.find({} , (err,allUser)=>{
