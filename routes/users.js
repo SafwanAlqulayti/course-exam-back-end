@@ -59,11 +59,11 @@ router.post('/login',  async(req,res)=>{
           var userToken = {user}
           //to hide the user password
           userToken.user.password = ""
-          console.log(userToken)
+        //   console.log(userToken)
           let token = jwt.sign(userToken , "secret" ,{expiresIn: 1440})
-          console.log(token)
+        //   console.log(token)
           
-          res.status(200).send(token)
+          res.status(200).json({ token:token ,user})
        }else{
           res.send("not allowed")
       }
@@ -91,14 +91,15 @@ router.delete('/:id', async (req,res)=>{
 //    })
     
 // })
-//get one user 
-// router.get('/:id', async(req,res)=>{
-//     try{
-//    const user = await User.findById(req.params.id) 
-//    res.json(user)
-// }catch (err){
-//     res.json(err)
-// }
-// })
+// get one user 
+router.get('/:id', async(req,res)=>{
+    try{
+   const user = await User.findById(req.params.id) 
+   res.json(user)
+   console.log('working')
+}catch (err){
+    res.json(err)
+}
+})
 
 module.exports = router 

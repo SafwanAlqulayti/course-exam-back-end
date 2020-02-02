@@ -1,7 +1,8 @@
  const express = require('express')
  const router = express.Router();
  const Course = require('../models/course').Course;
- 
+ const User = require('../models/user');
+
 
  
 
@@ -16,27 +17,64 @@
 //     // }
 // })
 // get all courses
-router.get('/', (req, res) => {
-    Course.find({}, (err, allCourses) => {
-      if (err) { console.log(err) }
-      res.json(allCourses);
-    });
-  });
+// router.get('/', (req, res) => {
+//     Course.find({}, (err, allCourses) => {
+//       if (err) { console.log(err) }
+//       res.json(allCourses);
+//     });
+//   });
+// router.post('/user/:id', (req ,res)=>{
+//   User.findById(req.params.id, (error,foundUser) =>{
+     
+//   console.log(foundUser.courses)
+//     const item = {name:req.body.name , category: req.body.category};
+//     foundUser.courses.push(item);
+//     foundUser.save((err,savedUser)=>{
+//     res.json(savedUser)
+//   })
+  
 
+ 
+// } )
+// })
   // create new course
-router.post('/' ,(req ,res)=>{
-    const course = new Course({
-        name: req.body.name ,
-        category: req.body.category
-    });
-    course.save()
-    .then(data =>{
-        res.json(data)
-    })
-    .catch(err=>{
-        res.json({message: err})
-    })
+router.post('/:id' ,(req ,res)=>{
+  Course.create(req.body, (err, createdCourse) => {
+
+    User.findById(req.params.id ,(err ,foundUser)=>{
+              console.log(createdCourse._id)
+              // res.json(createdCourse)
+              console.log(foundUser);
+              foundUser.courses.push(createdCourse._id);
+              foundUser.save((err,savedUser)=>{
+                console.log(savedUser);
+                    res.json(savedUser);
+                  })
+                })
+
+    // console.log(createdCourse._id);
+    // res.json(createdCourse);
+  })
 })
+//     const course = new Course({
+//         name: req.body.name ,
+//         category: req.body.category
+//     });
+//     course.save()
+//     .then(data =>{
+//       User.findById(req.param.id ,(err ,foundUser)=>{
+//         console.log(data._id)
+//         res.json(data)
+//         foundUser.courses.push(data._id)
+//         foundUser.save((err,savedUser)=>{
+//               res.json(savedUser)
+//       })
+      
+//     })
+//     // .catch(err=>{
+//     //     res.json({message: err})
+//     // })
+// })
 //get one course
 router.get('/:id' , async(req ,res)=>{
   try{
@@ -58,12 +96,13 @@ router.delete('/:id', async (req,res)=>{
 })
 //update 
 
-router.patch('/:id' , async (res,req)=>{
+router.put('/:id' , async (res,req)=>{
   try{
     const updatedCourse = await Course.findByIdAndUpdate(
        req.params.id  ,
       { $set: {name: req.body.name }} 
       );
+      console.log("working")
     res.json(updatedCourse)
   }catch (err){
     res.json({msg:err})
