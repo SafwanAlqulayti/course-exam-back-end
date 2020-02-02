@@ -17,12 +17,12 @@
 //     // }
 // })
 // get all courses
-// router.get('/', (req, res) => {
-//     Course.find({}, (err, allCourses) => {
-//       if (err) { console.log(err) }
-//       res.json(allCourses);
-//     });
-//   });
+router.get('/', (req, res) => {
+    Course.find({}, (err, allCourses) => {
+      if (err) { console.log(err) }
+      res.json(allCourses);
+    });
+  });
 // router.post('/user/:id', (req ,res)=>{
 //   User.findById(req.params.id, (error,foundUser) =>{
      

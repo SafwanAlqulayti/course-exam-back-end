@@ -30,7 +30,8 @@ router.post('/',(req,res)=>{// sign up
 
                 User.create({username: req.body.username,
                 email: req.body.email,
-                password: hash
+                password: hash ,
+                role: req.body.role
                 
         }).then((newuser)=> {
             res.json({msg:"User has created" ,newuser})
@@ -60,8 +61,8 @@ router.post('/login',  async(req,res)=>{
           //to hide the user password
           userToken.user.password = ""
         //   console.log(userToken)
-          let token = jwt.sign(userToken , "secret" ,{expiresIn: 1440})
-        //   console.log(token)
+          let token = jwt.sign(userToken , "secret" ,{expiresIn: 1000})
+        //   console.log(token)ç
           
           res.status(200).json({ token:token ,user})
        }else{
