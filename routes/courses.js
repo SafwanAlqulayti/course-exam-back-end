@@ -56,6 +56,7 @@ router.post('/:id' ,(req ,res)=>{
     // res.json(createdCourse);
   })
 })
+
 //     const course = new Course({
 //         name: req.body.name ,
 //         category: req.body.category
@@ -94,14 +95,14 @@ router.delete('/:id', async (req,res)=>{
     res.json({msg:err})
   }
 })
-//update 
+//updç
 
-router.put('/:id' , async (res,req)=>{
+router.put('/:id' , async (req,res)=>{
   try{
     const updatedCourse = await Course.findByIdAndUpdate(
        req.params.id  ,
-      { $set: {name: req.body.name }} 
-      );
+      { $set: {name: req.body.name , category: req.body.category }},{new :true}
+      )
       console.log("working")
     res.json(updatedCourse)
   }catch (err){

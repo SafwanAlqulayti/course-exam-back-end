@@ -5,7 +5,11 @@ const userSchema = new Schema({
     username: {type: String , required:[true , 'cant be blank']},
     email: {type: String , required:true},
     password: {type: String , required:true},// after the user sign in hash the password
-    role: String  ,//take it from the form
+    role: String  , 
+    img: String  ,
+    teaching: String  ,
+     
+
  
 
     courses:[{

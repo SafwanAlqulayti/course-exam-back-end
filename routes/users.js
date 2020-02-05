@@ -31,7 +31,9 @@ router.post('/',(req,res)=>{// sign up
                 User.create({username: req.body.username,
                 email: req.body.email,
                 password: hash ,
-                role: req.body.role
+                role: req.body.role ,
+                teaching: req.body.teaching ,
+                img: req.body.img
                 
         }).then((newuser)=> {
             res.json({msg:"User has created" ,newuser})
@@ -60,6 +62,7 @@ router.post('/login',  async(req,res)=>{
           var userToken = {user}
           //to hide the user password
           userToken.user.password = ""
+          
         //   console.log(userToken)
           let token = jwt.sign(userToken , "secret" ,{expiresIn: 1000})
         //   console.log(token)ç
@@ -84,23 +87,75 @@ router.delete('/:id', async (req,res)=>{
       res.json({msg:err})
     }
   })
-// get all user for testing only 
-// router.get('/',(req,res)=>{
-//    User.find({} , (err,allUser)=>{
-//        if(err) {console.log(err)}
-//        res.json(allUser)
-//    })
-    
-// })
-// get one user 
-router.get('/:id', async(req,res)=>{
-    try{
-   const user = await User.findById(req.params.id) 
-   res.json(user)
-   console.log('working')
-}catch (err){
-    res.json(err)
-}
+//   router.put('/:id', async (req,res)=>{
+//     try{
+//     const updatedUser = await User.findByIdAndUpdate(req.params.id,
+//     { $push: {courses: req.body.courses  }},{new :true}
+//     )
+//      res.json(updatedUser)
+//     }catch (err){
+//       res.json({msg:err})
+//     }
+//   })
+router.put('/:id/:courseID',  (req,res)=>{
+    console.log(req.params.courseID);
+    console.log(req.params.id);
+
+     User.findById(req.params.id, (err,foundUser)=>{
+        
+        console.log(foundUser);
+        if(foundUser.courses.includes(req.params.courseID)){
+           return console.log(foundUser);
+
+        }else{
+foundUser.courses.push(req.params.courseID)
+foundUser.save((err,saved)=>{
+    res.json(saved)
 })
+        }
+     }
+      )
+     
+      })
+// get all user for testing only 
+router.get('/',(req,res)=>{
+   User.find({} , (err,allUser)=>{
+       if(err) {console.log(err)}
+       res.json(allUser)
+   })
+    
+})
+
+
+// get one user 
+// router.get('/:id', async(req,res)=>{
+//     try{
+//    const user = await User.findById(req.params.id) 
+//    res.json(user)
+//    console.log('working')
+// }catch (err){
+//     res.json(err)
+// }
+// })
+router.get('/:id', async(req,res)=>{
+    User.findById(req.params.id)
+    .populate('courses')
+    .then((result)=>{
+        res.json(result)
+    })
+})
+router.put('/:id' , async (req,res)=>{
+    try{
+      const updatedUser = await User.findByIdAndUpdate(
+         req.params.id  ,
+        { $set: {img: req.body.img   }},{new :true}
+        )
+        console.log("working")
+      res.json(updatedUser)
+    }catch (err){
+      res.json({msg:err})
+    }
+  })
+ 
 
 module.exports = router 
