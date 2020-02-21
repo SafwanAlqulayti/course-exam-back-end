@@ -104,7 +104,8 @@ router.put('/:id' , async (req,res)=>{
       { $set: {name: req.body.name , category: req.body.category }},{new :true}
       )
       console.log("working")
-    res.json(updatedCourse)
+    // res.json(updatedCourse)
+    res.status(200).json(updatedCourse)
   }catch (err){
     res.json({msg:err})
   }

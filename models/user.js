@@ -7,7 +7,7 @@ const userSchema = new Schema({
     password: {type: String , required:true},// after the user sign in hash the password
     role: String  , 
     img: String  ,
-    teaching: String  ,
+    major: String  ,
      
 
  

@@ -3,6 +3,8 @@ const app = express();
 const mongoose = require('mongoose');
 const coursesRoute = require('./routes/courses')
 const userRoute = require('./routes/users')
+const imageRoute = require('./routes/image')
+
 const cors= require('cors');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -18,9 +20,12 @@ mongoose.connection.once('open', () => {
 
 app.use('/courses' , coursesRoute)
 app.use('/users' , userRoute)
+app.use('/uploads', express.static('uploads'))
 // app.use('/course/post' ,()=>{
 //     console.log("post is work")
 // })
+app.use('/image' , imageRoute)
+
 
 
 // ///route 
